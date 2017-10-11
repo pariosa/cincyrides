@@ -1,0 +1,58 @@
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+.nav:not(.navbar-right) li a:hover {
+	transform: scale(1.1) !important;
+	transition: all .5s;
+}
+
+.jumbotron.welcome {
+	background: url(/images/turntable.jpg) bottom center no-repeat;
+	background-size: cover;
+
+	* {
+		color: #fff;
+	}
+}
+
+.jumbotron.browse {
+	background: url(/images/skate.jpg) center center no-repeat;
+	background-size: cover;
+}
+
+.jumbotron.host {
+	background: url(/images/art.jpg) center center no-repeat;
+	background-size: cover;
+
+	* {
+		color: #000;
+	}
+}
+
+.jumbotron.post {
+	background: url(/images/running.jpg) center center no-repeat;
+	background-size: cover;
+
+}
+
+.well {
+	box-shadow: 0 1px 2px rgba(0,0,0,.1) !important;
+	border-radius: 0px !important;
+	background-color: #fff !important;
+}
+
+.panel {
+	border-radius: 0px !important;
+
+	&-heading {
+		border-radius: 0px !important;
+	}
+}
+
+footer {
+	margin-top: 50px;
+	padding-top: 35px;
+}

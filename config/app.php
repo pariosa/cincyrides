@@ -177,7 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         //cloud convert
-        RobbieP\CloudConvertLaravel\CloudConvertLaravelServiceProvider::class
+        //RobbieP\CloudConvertLaravel\CloudConvertLaravelServiceProvider::class
     ],
 
     /*

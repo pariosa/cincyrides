@@ -64,7 +64,7 @@ class EventController extends Controller
     $user = auth()->user();
 
     $this->validate($req, [
-       'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4048',
+       'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,pdf|max:8048',
     ]);
         $event = event::find($id);
 

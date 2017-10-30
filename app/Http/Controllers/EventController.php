@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
+use CloudConvert;
 use App\event;
 use App\User; 
 use App\UserEvent;
@@ -24,16 +25,23 @@ class EventController extends Controller
 
     public function create(Request $req) {
 
-       // dd($req);
+     //dd($req);
     $this->validate($req, [
-       'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4048',
+       //'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:4048',
     ]);
 
     //dd($req,$req->hasFile('image'),$req->input());
      if ($req->hasFile('image')) {
-        $imageName = time().'.'.$req->image->getClientOriginalExtension();
+        //dd($req->image->getClientOriginalExtension());
+        $imageNamePre = time();
+        $imageName = $imageNamePre . '.'.$req->image->getClientOriginalExtension();
         $req->image->move(public_path('upload'), $imageName);
         //dd($req->image); 
+        if($req->image->getClientOriginalExtension() == "pdf"){
+           //dd(CloudConvert::input('pdf')->conversionTypes());
+            CloudConvert::file(public_path('upload').'/'.$imageName)->to('png');
+            $imageName = $imageNamePre.'.'.'png';
+        }
         $approved = 0;
         $user = auth()->user();
         if($user->admin == 1){

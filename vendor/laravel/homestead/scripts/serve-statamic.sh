@@ -1,17 +1,12 @@
 #!/usr/bin/env bash
-
-mkdir /etc/nginx/ssl 2>/dev/null
-
-PATH_SSL="/etc/nginx/ssl"
-PATH_KEY="${PATH_SSL}/${1}.key"
-PATH_CSR="${PATH_SSL}/${1}.csr"
-PATH_CRT="${PATH_SSL}/${1}.crt"
-
-if [ ! -f $PATH_KEY ] || [ ! -f $PATH_CSR ] || [ ! -f $PATH_CRT ]
-then
-    openssl genrsa -out "$PATH_KEY" 2048 2>/dev/null
-    openssl req -new -key "$PATH_KEY" -out "$PATH_CSR" -subj "/CN=$1/O=Vagrant/C=UK" 2>/dev/null
-    openssl x509 -req -days 365 -in "$PATH_CSR" -signkey "$PATH_KEY" -out "$PATH_CRT" 2>/dev/null
+declare -A params=$5     # Create an associative array
+paramsTXT=""
+if [ -n "$5" ]; then
+   for element in "${!params[@]}"
+   do
+      paramsTXT="${paramsTXT}
+      fastcgi_param ${element} ${params[$element]};"
+   done
 fi
 
 block="server {
@@ -45,6 +40,7 @@ block="server {
         fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        $paramsTXT
 
         fastcgi_intercept_errors off;
         fastcgi_buffer_size 16k;

@@ -51,5 +51,6 @@
 
 {{$events->links()}}
 </div>
+</div>
 @endif
 @endsection

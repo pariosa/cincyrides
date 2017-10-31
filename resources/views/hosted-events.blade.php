@@ -72,10 +72,10 @@
                         <form action="{{ url('hosted-events/{id}') }}" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="eventID" value="{{ $event->id }}"/>
-                            <button type="submit" class="btn btn-info">Delete event</button>
-  
+
                           </form>
-                            
+                                                        <a href="/delete/{{$event->id}}"><button type="submit" class="btn btn-danger">Delete event</button></a>
+  
                     </div>
                 </div>
             </div>

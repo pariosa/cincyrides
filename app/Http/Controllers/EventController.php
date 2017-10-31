@@ -39,7 +39,7 @@ class EventController extends Controller
         //dd($req->image); 
         if($req->image->getClientOriginalExtension() == "pdf"){
            //dd(CloudConvert::input('pdf')->conversionTypes());
-            CloudConvert::file(public_path('upload').'/'.$imageName)->to('png');
+            CloudConvert::file(public_path('upload').'/'.$imageName)->pageRange(1, 1)->to('png');
             $imageName = $imageNamePre.'.'.'png';
         }
         $approved = 0;
@@ -72,16 +72,24 @@ class EventController extends Controller
     $user = auth()->user();
 
     $this->validate($req, [
-       'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,pdf|max:8048',
+       'image' => 'required||max:8048',
     ]);
         $event = event::find($id);
 
     //dd($req,$req->hasFile('image'),$req->input());
      if ($req->hasFile('image')) {
-        $imageName = time().'.'.$req->image->getClientOriginalExtension();
+        $imageNamePre = time();
+        $imageName = $imageNamePre . '.'.$req->image->getClientOriginalExtension(); 
         $req->image->move(public_path('upload'), $imageName);
         //dd($req->image); 
 
+        $event->image = $imageName;
+        if($req->image->getClientOriginalExtension() == "pdf"){
+           //dd(CloudConvert::input('pdf')->conversionTypes());
+            CloudConvert::file(public_path('upload').'/'.$imageName)->pageRange(1, 1)->to('png');
+            $imageName = $imageNamePre.'.'.'png';
+
+        }
         $event->image = $imageName;
         $event->event_name =    $req->get('event_name');
         $event->date =          $req->get('date');
@@ -96,7 +104,6 @@ class EventController extends Controller
     }else{
 
         //dd($event);
-
         $event->event_name =    $req->get('event_name');
         $event->date =          $req->get('date');
         $event->strava_link =   $req->get('strava_link');
@@ -183,13 +190,18 @@ class EventController extends Controller
         return redirect('/home');
     }
 
-    public function delete(Request $req, $id)
+    public function delete($id)
     {
-        $others = UserEvent::where('eventID', $req->eventID);
+        $user = auth()->user();
+
+        $event = event::where('id', $id);
+
+        if($user->admin == 1 || $user->id == $event->event_owner_id){
+        $others = UserEvent::where('eventID', $id);
         $others->delete();
 
-        $event = event::where('id', $req->eventID);
         $event->delete();
-        return redirect('/hosted-events');
+        }
+        return back();
     }
 }

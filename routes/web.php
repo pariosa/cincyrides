@@ -35,6 +35,7 @@ Route::post('/hosted-events/{id}', 'EventController@delete');
 Route::get('/edit-event/{id}', 'EventController@editSingle');
 
 Route::post('/edit-event/{id}', 'EventController@update');
+Route::get('/delete/{id}', 'EventController@delete');
 
 Route::get('/admin', 'AdminController@users');
 Route::get('/admin/events', 'AdminController@events');

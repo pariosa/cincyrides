@@ -4,31 +4,31 @@
 
 <div class="col-md-6 col-md-offset-3">
 <div class="col-md-10 col-md-offset-1">
-	<div class="col-md-2">
-	Event Name
+	<div class="col-md-1">
+	Name
 	</div>
 	<div class="col-md-4">
 	Description
 	</div> 
-	<div class="col-md-2">
+	<div class="col-md-1">
 	Creator
 	</div>
 	<div class="col-md-2">
 	Status
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-4">
 	Action
 	</div>
 </div>
 @foreach($events as $event)
 <div class="col-md-10 col-md-offset-1">
-	<div class="col-md-2">
+	<div class="col-md-1">
 	{{$event->event_name}} 
 	</div>
 	<div class="col-md-4">
 	{{$event->description}}
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-1">
 	{{App\User::where('id', $event->event_owner_id)->pluck('name')}}
 	</div>
 	<div class="col-md-2">
@@ -38,13 +38,16 @@
 	Approved
 	@endif
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-4">
 	@if($event->approved == 0)
 	<a href="/approve/{{$event->id}}""><buton class="btn btn-warning btn-sm">Approve</buton></a>
 	@elseif($event->approved == 1)
  
 	<a href="/suspend/{{$event->id}}"><buton class="btn btn-info btn-default btn-sm">Suspend</buton></a>
+
 	@endif
+		<a href="/delete/{{$event->id}}"><buton class="btn btn-info btn-danger btn-sm">Delete</buton></a>
+
 	</div>
 </div>
 @endforeach
